@@ -30,5 +30,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        npm ci
+        npm install
         npm run ng -- deploy
