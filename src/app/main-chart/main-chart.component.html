@@ -1,1 +1,5 @@
-<p-dropdown [legislaturas]="cities1" [(selectedLegislatura)]="selectedCity1" placeholder="Legislatura"></p-dropdown>
+<p-dropdown (onChange)="fetchDeputados()" [disabled]="fetchingLegislaturas" [options]="legislaturas" [(ngModel)]="selectedLegislatura" placeholder="Legislatura" optionLabel="dataInicio"></p-dropdown>
+<p-dropdown (onChange)="deputadoSelected()" [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputado" placeholder="Deputado" optionLabel="nome"></p-dropdown>
+<button pButton (click)="searchStarted()" [disabled]="searchDisabled" icon="pi pi-search" class="ui-button-rounded  ui-button-secondary"></button>
+<div id="chart"></div>
+<!-- <p-multiSelect [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputado" optionLabel="nome"></p-multiSelect> -->
