@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainChartComponent implements OnInit {
 
+  legislaturas: number[];
+
+  selectedLegislatura: number;
+
   constructor() { }
 
   ngOnInit() {
+    this.legislaturas = [2007, 2010, 2014, 2018, 2022];
   }
 
 }
