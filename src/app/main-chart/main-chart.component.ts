@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LegislaturaService } from '../api-client/legislatura.service';
 import { Legislatura } from '../entities/legislatura';
-import { LegislaturaResponse } from '../api-client/legislatura-response';
 import { DeputadosService } from '../api-client/deputados.service';
 import { DeputadosResponse } from '../api-client/deputados-response';
 import { Deputado } from '../entities/deputado';
-import { GastoTotal } from '../entities/gastoTotal';
 import { GastoDeputadoResponse } from '../api-client/gasto-deputado-response';
 
-import * as c3 from "c3";
-import { GastoDeputado } from '../entities/gastoDeputado';
-import * as d3 from 'd3';
 import { GastosDeputado } from '../entities/gastosDeputado';
 import { Link } from '../api-client/link';
 
