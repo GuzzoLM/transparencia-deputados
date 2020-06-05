@@ -132,8 +132,12 @@ export class MainChartComponent implements OnInit {
   }
 
   recalculateBusy(){
-    this.chartsEnabled = this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted;
-    this.loading = !(this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted);
+    this.chartsEnabled = this.searchCompleted &&
+      (!this.compareWithParty || this.partyDataCompleted) &&
+      (!(this.selectedDeputadosExtras?.length > 0) ||this.searchDeputadosExtrasCompleted);
+    this.loading = !(this.searchCompleted &&
+      (!this.compareWithParty || this.partyDataCompleted) &&
+      (!(this.selectedDeputadosExtras?.length > 0) ||this.searchDeputadosExtrasCompleted));
   }
 
   
