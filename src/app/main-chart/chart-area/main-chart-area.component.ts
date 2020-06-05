@@ -3,7 +3,6 @@ import { GastoDeputado } from 'src/app/entities/gastoDeputado';
 import * as c3 from 'c3';
 import { Deputado } from 'src/app/entities/deputado';
 import { Legislatura } from 'src/app/entities/legislatura';
-import { timingSafeEqual } from 'crypto';
 import { GastosDeputado } from 'src/app/entities/gastosDeputado';
 
 @Component({
