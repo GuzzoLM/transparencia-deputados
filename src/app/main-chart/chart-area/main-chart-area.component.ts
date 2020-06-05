@@ -90,8 +90,6 @@ export class MainChartAreaComponent implements OnInit {
       }
     }
 
-    console.log(dataDeputados);
-
     for(var data of dataDeputados){
       this.totalLineChart.load({
         columns: [data]

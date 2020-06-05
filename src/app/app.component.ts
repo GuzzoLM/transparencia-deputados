@@ -13,12 +13,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.items = [
         {
-            label: 'Analise de Deputado',
+            label: 'Análise por Deputado',
             icon: 'pi pi-user',
             routerLink: '/analise-deputado'
         },
         {
-            label: 'Comparar Partidos',
+            label: 'Análise por Partidos',
             icon: 'pi pi-users',
             routerLink: '/comparar-partidos'
         }

@@ -102,8 +102,6 @@ export class MainChartComponent implements OnInit {
     return this.deputadosService.GetByLink(url)
       .subscribe((data: GastoDeputadoResponse) => {
         gastosDeputado.gastos = [...gastosDeputado.gastos, ...data.dados];
-        console.log(url);
-        console.log(gastosDeputado.gastos);
         let nextLink = data.links.find(this.findNextLink);
         if (nextLink){
           this.getDespesasRecursive(nextLink.href, gastosDeputado, gastosCallback);
