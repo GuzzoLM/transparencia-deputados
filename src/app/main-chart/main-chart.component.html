@@ -1,5 +1,39 @@
-<p-dropdown (onChange)="fetchDeputados()" [disabled]="fetchingLegislaturas" [options]="legislaturas" [(ngModel)]="selectedLegislatura" placeholder="Legislatura" optionLabel="dataInicio"></p-dropdown>
-<p-dropdown (onChange)="deputadoSelected()" [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputado" placeholder="Deputado" optionLabel="nome"></p-dropdown>
-<button pButton (click)="searchStarted()" [disabled]="searchDisabled" icon="pi pi-search" class="ui-button-rounded  ui-button-secondary"></button>
-<div id="chart"></div>
-<!-- <p-multiSelect [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputado" optionLabel="nome"></p-multiSelect> -->
+<p-fieldset legend="Pesquisa" [toggleable]="true">
+    <div class="form-container">
+        <div style="display: flex; margin-bottom: 1em;">
+            <div style="margin-right: 2em; float: right;">
+                <h3>Selecione a Legislatura:</h3>
+                <p-dropdown (onChange)="fetchDeputados()" [disabled]="fetchingLegislaturas" [options]="legislaturas" [(ngModel)]="selectedLegislatura" placeholder="Legislatura" optionLabel="dataInicio"></p-dropdown>
+            </div>
+            <div style="margin-right: 2em; float: right;">
+                <h3>Selecione o Deputado:</h3>
+                <p-dropdown (onChange)="deputadoSelected()" [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputado" placeholder="Deputado" optionLabel="nome"></p-dropdown>
+            </div>
+            <div style="margin-right: 2em; float: right;">
+                <h3>Comparar com o partido?</h3>
+                <p-checkbox name="groupname" binary="true" (onChange)="deputadoSelected()" [(ngModel)]="compareWithParty" label="Usar dados do partido"></p-checkbox>
+            </div>
+        </div>
+        <div style="display: flex; margin-bottom: 1em;">
+            <div style="margin-right: 2em; float: right;">
+                <h3>Comparar com outros deputados</h3>
+                <p-multiSelect (onChange)="deputadoSelected()" [disabled]="fetchingDeputados" [options]="deputados" [(ngModel)]="selectedDeputadosExtras" optionLabel="nome"></p-multiSelect>
+            </div>
+        </div>
+        <div style="display: flex; margin-bottom: 1em;">
+            <button pButton (click)="searchStarted()" [disabled]="searchDisabled" label="Buscar" icon="pi pi-search" class="ui-button-rounded  ui-button-secondary"></button>
+        </div>
+    </div>
+</p-fieldset>
+<div *ngIf="chartsEnabled">
+    <app-main-chart-area
+      [gastosPartido]="gastosPartido"
+      [compareWithParty]="compareWithParty"
+      [legislatura]="selectedLegislatura"
+      [deputado]="selectedDeputado"
+      [gastosDeputado]="gastosDeputado"
+      [deputadosExtra]="selectedDeputadosExtras"
+      [gastosDeputadosExtras]="gastosDeputadosExtras"
+    >
+    </app-main-chart-area>
+</div>

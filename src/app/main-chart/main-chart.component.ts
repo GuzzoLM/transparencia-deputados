@@ -10,6 +10,8 @@ import { GastoDeputadoResponse } from '../api-client/gasto-deputado-response';
 
 import * as c3 from "c3";
 import { GastoDeputado } from '../entities/gastoDeputado';
+import * as d3 from 'd3';
+import { GastosDeputado } from '../entities/gastosDeputado';
 
 @Component({
   selector: 'app-main-chart',
@@ -26,14 +28,28 @@ export class MainChartComponent implements OnInit {
 
   selectedDeputado: Deputado;
 
+  selectedDeputadosExtras: Deputado[];
+
   fetchingLegislaturas = true;
 
   fetchingDeputados = true;
 
   searchDisabled = true;
 
+  searchCompleted = false;
+
+  searchDeputadosExtrasCompleted = false;
+
+  partyDataCompleted = false;
+
+  compareWithParty = false;
+
+  chartsEnabled = this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted;
+
   gastosTotais = new Map<string, number>();
   gastosDeputado: GastoDeputado[] = [];
+  gastosPartido: GastoDeputado[][] = [];
+  gastosDeputadosExtras: GastosDeputado[] = [];
 
   constructor(private legislaturaService: LegislaturaService, private deputadosService: DeputadosService) { 
     this.legislaturas = [];
@@ -42,7 +58,6 @@ export class MainChartComponent implements OnInit {
   ngOnInit() {
     this.legislaturaService.GetAll()
       .subscribe((data: LegislaturaResponse) => {
-        console.log(data);
         this.legislaturas = data.dados;
         this.fetchingLegislaturas = false;
       });
@@ -52,7 +67,7 @@ export class MainChartComponent implements OnInit {
 
   fetchDeputados(){
     this.fetchingDeputados = true;
-    this.deputadosService.GetByLegislatura(this.selectedLegislatura.dataInicio)
+    this.deputadosService.GetByLegislatura(this.selectedLegislatura.id)
       .subscribe((data: DeputadosResponse) => {
         this.deputados = data.dados;
         this.fetchingDeputados = false;
@@ -64,38 +79,59 @@ export class MainChartComponent implements OnInit {
   }
 
   searchStarted(){
+    this.searchCompleted = false;
+    this.partyDataCompleted = false;
+    this.searchDeputadosExtrasCompleted = false;
+    this.recalculateBusy();
     this.gastosTotais = new Map<string, number>();
-    this.deputadosService.GetDespesas(this.selectedDeputado.id, this.selectedLegislatura.id)
-      .subscribe((data: GastoDeputadoResponse) => {
-        this.gastosDeputado = data.dados;
-        for(var gasto of data.dados)
-          this.gastosTotais.set(gasto.tipoDespesa,(this.gastosTotais.get(gasto.tipoDespesa) || 0) + gasto.valorLiquido );
+    this.gastosDeputado = [];
+    this.gastosPartido = [];
+    this.gastosDeputadosExtras = [];
 
-        console.log(this.gastosTotais);
+    this.deputadosService.GetDespesas(this.selectedDeputado, this.selectedLegislatura.id)
+      .subscribe((data: GastosDeputado) => {
+        this.searchCompleted = true;
+        this.gastosDeputado = data.gastos;
         this.searchDisabled = true;
-        this.fillPieChart();
+        this.recalculateBusy();
+        if (this.compareWithParty) this.getPartyData();
+      });
+    if (this.selectedDeputadosExtras?.length > 0) this.getDeputadosExtrasData();
+  }
+
+  getDeputadosExtrasData(){
+    for(var deputadoExtra of this.selectedDeputadosExtras){
+      this.deputadosService.GetDespesas(deputadoExtra, this.selectedLegislatura.id)
+        .subscribe((dataDeputado: GastosDeputado) => {
+          this.gastosDeputadosExtras.push(dataDeputado);
+          if (this.gastosDeputadosExtras.length == this.selectedDeputadosExtras.length){
+            this.searchDeputadosExtrasCompleted = true;
+            this.recalculateBusy();
+          }
+        });
+    }
+  }
+
+  getPartyData(){
+    this.deputadosService.GetByPartidoAndLegislatura(this.selectedDeputado.siglaPartido, this.selectedLegislatura.id)
+      .subscribe((data: DeputadosResponse) => {
+        for(var deputado of data.dados){
+          this.deputadosService.GetDespesas(deputado, this.selectedLegislatura.id)
+            .subscribe((dataDeputado: GastosDeputado) => {
+              this.gastosPartido.push(dataDeputado.gastos);
+              if (this.gastosPartido.length == data.dados.length){
+                this.partyDataCompleted = true;
+                this.recalculateBusy();
+              }
+            });
+        }
       });
   }
 
-  fillPieChart(){
-    var columns = [];
-
-    var i = 0;
-    for(var gasto of this.gastosTotais){
-      columns[i] = [gasto[0], gasto[1]];
-      i++;
-    }
-
-    var chart = c3.generate({
-      bindto: '#chart',
-      data: {
-        columns: columns,
-        type : 'pie'
-      },
-      legend: {
-        position: 'right'
-      }
-  });
+  recalculateBusy(){
+    this.chartsEnabled = this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted;
   }
+
+  
 
 }
