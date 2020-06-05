@@ -13,10 +13,10 @@ import { GastosDeputado } from 'src/app/entities/gastosDeputado';
 export class MainChartAreaComponent implements OnInit {
 
   @Input()
-  gastosDeputado: GastoDeputado[];
+  gastosDeputado: GastosDeputado;
 
   @Input()
-  gastosPartido: GastoDeputado[][];
+  gastosPartido: GastosDeputado[];
 
   @Input()
   gastosDeputadosExtras: GastosDeputado[];
@@ -51,10 +51,10 @@ export class MainChartAreaComponent implements OnInit {
   ngOnInit(): void {
     this.getLegislaturaTimeseries();
 
-    for(var gasto of this.gastosDeputado)
+    for(var gasto of this.gastosDeputado.gastos)
       this.gastosTotais.set(gasto.tipoDespesa,(this.gastosTotais.get(gasto.tipoDespesa) || 0) + gasto.valorLiquido );
 
-    this.gastosMensais = this.groupByMonth(this.gastosDeputado);
+    this.gastosMensais = this.groupByMonth(this.gastosDeputado.gastos);
     this.fillPieChart();
     this.fillTotalineChart();
     if (this.compareWithParty) this.addPartyToToalLineChart();
@@ -105,7 +105,7 @@ export class MainChartAreaComponent implements OnInit {
     var dataPartido = [];
 
     for (var gastosDeputado of this.gastosPartido){
-      gastosMensais.push(this.groupByMonth(gastosDeputado));
+      gastosMensais.push(this.groupByMonth(gastosDeputado.gastos));
     }
 
     var numDeputados = gastosMensais.length;
@@ -215,65 +215,6 @@ export class MainChartAreaComponent implements OnInit {
         year++;
       }
     }
-  }
-  
-  getStringDate(month: number, year: number){
-    var stringMonth = '';
-    switch(month){
-      case 1: {
-        stringMonth = 'Jan';
-        break;
-      }
-      case 2: {
-        stringMonth = 'Fev';
-        break;
-      }
-      case 3: {
-        stringMonth = 'Mar';
-        break;
-      }
-      case 4: {
-        stringMonth = 'Abr';
-        break;
-      }
-      case 5: {
-        stringMonth = 'Mai';
-        break;
-      }
-      case 6: {
-        stringMonth = 'Jun';
-        break;
-      }
-      case 7: {
-        stringMonth = 'Jul';
-        break;
-      }
-      case 8: {
-        stringMonth = 'Ago';
-        break;
-      }
-      case 9: {
-        stringMonth = 'Set';
-        break;
-      }
-      case 10: {
-        stringMonth = 'Out';
-        break;
-      }
-      case 11: {
-        stringMonth = 'Nov';
-        break;
-      }
-      case 12: {
-        stringMonth = 'Dez';
-        break;
-      }
-      default: {
-        stringMonth = 'ERROR';
-        break;
-      }
-    }
-    return year + '-' + stringMonth;
   }
 
 }

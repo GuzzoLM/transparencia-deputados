@@ -3,7 +3,7 @@
         <div style="display: flex; margin-bottom: 1em;">
             <div style="margin-right: 2em; float: right;">
                 <h3>Selecione a Legislatura:</h3>
-                <p-dropdown (onChange)="fetchDeputados()" [disabled]="fetchingLegislaturas" [options]="legislaturas" [(ngModel)]="selectedLegislatura" placeholder="Legislatura" optionLabel="dataInicio"></p-dropdown>
+                <p-dropdown (onChange)="fetchDeputados()" [disabled]="fetchingLegislaturas" [options]="legislaturas" [(ngModel)]="selectedLegislatura" placeholder="Legislatura" optionLabel="name"></p-dropdown>
             </div>
             <div style="margin-right: 2em; float: right;">
                 <h3>Selecione o Deputado:</h3>
