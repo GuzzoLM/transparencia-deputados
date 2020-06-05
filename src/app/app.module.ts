@@ -10,6 +10,7 @@ import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {CheckboxModule} from 'primeng/checkbox';
 import {FieldsetModule} from 'primeng/fieldset';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +38,8 @@ import { MainChartAreaComponent } from './main-chart/chart-area/main-chart-area.
     ButtonModule,
     CardModule,
     CheckboxModule,
-    FieldsetModule
+    FieldsetModule,
+    ProgressSpinnerModule
   ],
   providers: [ ],
   bootstrap: [AppComponent]

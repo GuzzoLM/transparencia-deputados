@@ -25,6 +25,9 @@
         </div>
     </div>
 </p-fieldset>
+<div *ngIf="loading" class="form-container" style="display: flex; margin-top: 3em; width: 10em;">
+    <p-progressSpinner></p-progressSpinner>
+</div>
 <div *ngIf="chartsEnabled">
     <app-main-chart-area
       [gastosPartido]="gastosPartido"

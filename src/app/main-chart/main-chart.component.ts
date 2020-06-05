@@ -44,6 +44,8 @@ export class MainChartComponent implements OnInit {
 
   compareWithParty = false;
 
+  loading = false;
+
   chartsEnabled = this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted;
 
   gastosTotais = new Map<string, number>();
@@ -82,6 +84,7 @@ export class MainChartComponent implements OnInit {
     this.searchCompleted = false;
     this.partyDataCompleted = false;
     this.searchDeputadosExtrasCompleted = false;
+    this.loading = true;
     this.recalculateBusy();
     this.gastosTotais = new Map<string, number>();
     this.gastosDeputado = [];
@@ -130,6 +133,7 @@ export class MainChartComponent implements OnInit {
 
   recalculateBusy(){
     this.chartsEnabled = this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted;
+    this.loading = !(this.searchCompleted && (!this.compareWithParty || this.partyDataCompleted) && this.searchDeputadosExtrasCompleted);
   }
 
   
